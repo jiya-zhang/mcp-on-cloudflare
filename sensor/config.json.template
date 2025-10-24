@@ -1,0 +1,16 @@
+{
+  "cloudflare": {
+    "api_token": "YOUR_API_TOKEN_HERE",
+    "account_id": "YOUR_ACCOUNT_ID_HERE",
+    "database_id": "YOUR_DATABASE_ID_HERE"
+  },
+  "camera": {
+    "index": 0,
+    "name": "Your Camera Name",
+    "interval": 5
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "busyness_monitor.log"
+  }
+}

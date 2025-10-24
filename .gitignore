@@ -1,0 +1,101 @@
+# Sensitive Configuration Files
+sensor/config.json
+sensor/test_upload.py
+
+# API Keys and Credentials
+*.env
+.env
+.env.local
+.env.production
+.env.staging
+
+# Cloudflare Credentials
+**/wrangler.toml
+**/wrangler.jsonc
+**/wrangler.json
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+
+# Log Files
+*.log
+sensor/busyness_monitor.log
+**/logs/
+**/log/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary Files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Node.js (for beezee worker)
+beezee/node_modules/
+beezee/.wrangler/
+beezee/dist/
+beezee/build/
+
+# Camera/Image Files (if any are generated)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+captures/
+images/
+photos/
+
+# Backup Files
+*.bak
+*.backup
+*.old
