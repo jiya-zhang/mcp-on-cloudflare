@@ -1,3 +1,4 @@
+
 # MCP Server Project
 
 This is a Model Context Protocol (MCP) server built with **mcp-lite**.
