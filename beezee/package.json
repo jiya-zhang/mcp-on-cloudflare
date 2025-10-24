@@ -1,5 +1,5 @@
 {
-  "name": "my-mcp-lite-server",
+  "name": "beezee",
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
