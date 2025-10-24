@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "starter-mcp-cloudflare",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-10-07",
+  "account_id": "61b59fbed9fe7016418e6d16a8e2521e",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "business",
+      "database_id": "c934d24d-3b7e-49b8-ba4d-b2c696aa8958"
+    }
+  ]
+  // "ai": {
+  //   "binding": "AI"
+  // },
+  // "observability": {
+  //   "enabled": true,
+  //   "head_sampling_rate": 1
+  // }
+}
