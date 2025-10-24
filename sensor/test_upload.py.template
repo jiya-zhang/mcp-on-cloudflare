@@ -1,0 +1,154 @@
+#!/usr/bin/env python3
+"""
+Test script to upload data directly to D1 database
+"""
+
+import requests
+import json
+import time
+from datetime import datetime
+
+def test_upload():
+    """Test uploading data to D1 database"""
+    
+    # Your Cloudflare credentials - REPLACE THESE WITH YOUR ACTUAL VALUES
+    api_token = "YOUR_API_TOKEN_HERE"
+    account_id = "YOUR_ACCOUNT_ID_HERE"
+    database_id = "YOUR_DATABASE_ID_HERE"
+    
+    base_url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/d1/database/{database_id}"
+    
+    headers = {
+        'Authorization': f'Bearer {api_token}',
+        'Content-Type': 'application/json'
+    }
+    
+    # Test data
+    timestamp = datetime.now().isoformat()
+    score = 7
+    metadata = {
+        'motion_ratio': 0.5,
+        'edge_ratio': 0.3,
+        'color_variance': 1000.0,
+        'texture_variance': 100.0,
+        'contour_count': 15,
+        'combined_raw': 0.6
+    }
+    
+    # Prepare the SQL query
+    sql_query = """
+    INSERT INTO busyness_data (timestamp, score, motion_ratio, edge_ratio, 
+                             color_variance, texture_variance, contour_count, 
+                             combined_raw, metadata, notes, camera_name)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """
+    
+    # Prepare parameters
+    params = [
+        timestamp,
+        score,
+        metadata.get('motion_ratio', 0),
+        metadata.get('edge_ratio', 0),
+        metadata.get('color_variance', 0),
+        metadata.get('texture_variance', 0),
+        metadata.get('contour_count', 0),
+        metadata.get('combined_raw', 0),
+        json.dumps(metadata),
+        "Test notes",
+        "Test Camera"
+    ]
+    
+    payload = {
+        'sql': sql_query,
+        'params': params
+    }
+    
+    print(f"🧪 Testing database upload...")
+    print(f"   Timestamp: {timestamp}")
+    print(f"   Score: {score}")
+    
+    try:
+        response = requests.post(
+            f"{base_url}/query",
+            headers=headers,
+            json=payload,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            if result.get('success', False):
+                print("✅ Successfully uploaded test data!")
+                print(f"   Response: {result}")
+                return True
+            else:
+                print(f"❌ Database query failed: {result.get('errors', 'Unknown error')}")
+                return False
+        else:
+            print(f"❌ API request failed: {response.status_code} - {response.text}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Error uploading to database: {e}")
+        return False
+
+def test_query():
+    """Test querying data from D1 database"""
+    
+    # Your Cloudflare credentials - REPLACE THESE WITH YOUR ACTUAL VALUES
+    api_token = "YOUR_API_TOKEN_HERE"
+    account_id = "YOUR_ACCOUNT_ID_HERE"
+    database_id = "YOUR_DATABASE_ID_HERE"
+    
+    base_url = f"https://api.cloudflare.com/client/v4/accounts/{account_id}/d1/database/{database_id}"
+    
+    headers = {
+        'Authorization': f'Bearer {api_token}',
+        'Content-Type': 'application/json'
+    }
+    
+    # Query to get recent data
+    payload = {
+        'sql': 'SELECT * FROM busyness_data ORDER BY timestamp DESC LIMIT 5'
+    }
+    
+    print(f"🔍 Testing database query...")
+    
+    try:
+        response = requests.post(
+            f"{base_url}/query",
+            headers=headers,
+            json=payload,
+            timeout=30
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            if result.get('success', False):
+                data = result.get('result', [])
+                print(f"✅ Successfully queried {len(data)} records!")
+                for record in data:
+                    print(f"   ID: {record.get('id')}, Score: {record.get('score')}, Time: {record.get('timestamp')}")
+                return True
+            else:
+                print(f"❌ Database query failed: {result.get('errors', 'Unknown error')}")
+                return False
+        else:
+            print(f"❌ API request failed: {response.status_code} - {response.text}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Error querying database: {e}")
+        return False
+
+if __name__ == "__main__":
+    print("🚀 Testing D1 Database Upload")
+    print("=" * 40)
+    
+    # Test upload
+    if test_upload():
+        print("\n" + "=" * 40)
+        # Test query
+        test_query()
+    
+    print("\n🎉 Test complete!")
